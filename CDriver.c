@@ -1,5 +1,5 @@
 #include "CDriver.h"
-#include <math.h>
+//#include <math.h>
 
 #define PI 3.141592654
 /* Gear Changing Constants*/
@@ -55,7 +55,13 @@ typedef enum Direction {
     RIGHT
 }Direction;
 
-//kiszámolja, hogy hányadik sebességbe kell rakni
+
+float abs(float x) {
+    if (x < 0.0) return -x;
+    else return x;
+}
+
+
 int getGear(structCarState* cs)
 {
     int gear = cs->gear;
@@ -266,6 +272,7 @@ float getAccel(structCarState* cs)
     else
         return 0.3; // when out of track returns a moderate acceleration command
 }
+
 structCarControl CDrive(structCarState cs)
 {
     if (cs.stage != cs.prevStage)
