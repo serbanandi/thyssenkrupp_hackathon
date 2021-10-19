@@ -1,5 +1,5 @@
 #include "CDriver.h"
-//#include <math.h>
+#include <math.h>
 
 #define PI 3.141592654
 /* Gear Changing Constants*/
@@ -54,12 +54,6 @@ typedef enum Direction {
     LEFT,
     RIGHT
 }Direction;
-
-
-float abs(float x) {
-    if (x < 0.0) return -x;
-    else return x;
-}
 
 
 int getGear(structCarState* cs)
@@ -195,22 +189,22 @@ int maxDistIdx(structCarState* cs) {
         }
     }
     if (sameCtr)
-        return -1;
-        //return avgIdx / sameCtr;
+//        return -1;
+        return avgIdx / sameCtr;
 
     return maxIdx;
 }
 
-
+/*
 float getSteer(structCarState* cs)
 {
     float dirAngle;
     int maxDIdx = maxDistIdx(cs);
     // steering angle is compute by correcting the actual car angle w.r.t. to track
     // axis [cs->angle] and to adjust car position w.r.t to middle of track [cs->trackPos*0.5]
-    if (maxDIdx == -1)
-        dirAngle = cs->angle + cs->trackPos * 0.25;
-    else
+    //if (maxDIdx == -1)
+    //    dirAngle = cs->angle + cs->trackPos * 0.25;
+    //else
 
         dirAngle = cs->angle - (abs(cs->trackPos) * (-1) * cs->angle + (1 - abs(cs->trackPos)) * sensorAngle[maxDIdx]);
     float targetAngle =  dirAngle - cs->trackPos * 0.5;
@@ -221,24 +215,21 @@ float getSteer(structCarState* cs)
         return (targetAngle) / steerLock;
 
 }
+*/
 
-/*float getSteer(structCarState* cs)
+
+float getSteer(structCarState* cs)
 {
     // steering angle is compute by correcting the actual car angle w.r.t. to track
     // axis [cs->angle] and to adjust car position w.r.t to middle of track [cs->trackPos*0.5]
-    int R;
-    R = trackCurvature(cs);
-    float targetAngle = (cs->angle - cs->trackPos * 0.5) -
+    float targetAngle = cs->angle - cs->trackPos * 0.5;
     // at high speed reduce the steering command to avoid loosing the control
-    if (isBend(cs)) {
-       // targetAngle = sensorAngle[maxDistIdx(cs)];
-    }
     if (cs->speedX > steerSensitivityOffset)
         return targetAngle / (steerLock * (cs->speedX - steerSensitivityOffset) * wheelSensitivityCoeff);
     else
         return (targetAngle) / steerLock;
 
-}*/
+}
 
 
 float getAccel(structCarState* cs)
